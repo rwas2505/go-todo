@@ -45,6 +45,39 @@ func ItemContext(next http.Handler) http.Handler {
     })
 }
 
+func getAllItems(w http.ResponseWriter, r *http.Request) {
+    items, err := dbInstance.GetAllItems()
+
+    if err != nil {
+        render.Render(w, r, ServerErrorRenderer(err))
+        return
+    }
+
+    if err := render.Render(w, r, items); err != nil {
+        render.Render(w, r, ErrorRenderer(err))
+    }
+}
+
+func getItem(w http.ResponseWriter, r *http.Request) {
+    itemID := r.Context().Value(itemIDKey).(int)
+
+    item, err := dbInstance.GetItemById(itemID)
+
+    if err != nil {
+        if err == db.ErrNoMatch {
+            render.Render(w, r, ErrNotFound)
+        } else {
+            render.Render(w, r, ErrorRenderer(err))
+        }
+        return
+    }
+	
+    if err := render.Render(w, r, &item); err != nil {
+        render.Render(w, r, ServerErrorRenderer(err))
+        return
+    }
+}
+
 func createItem(w http.ResponseWriter, r *http.Request) {
     item := &models.Item{}
 
@@ -57,7 +90,7 @@ func createItem(w http.ResponseWriter, r *http.Request) {
         render.Render(w, r, ErrorRenderer(err))
         return
     }
-	
+
     if err := render.Render(w, r, item); err != nil {
         render.Render(w, r, ServerErrorRenderer(err))
         return
