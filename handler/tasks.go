@@ -102,6 +102,7 @@ func updateTask(w http.ResponseWriter, r *http.Request) {
 
 	taskData := models.Task{}
 
+    // If the request body cannot bind to the Task object, render an error
 	if err := render.Bind(r, &taskData); err != nil {
 		render.Render(w, r, ErrorRenderer(err))
 		return

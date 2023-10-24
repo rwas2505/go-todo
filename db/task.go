@@ -82,7 +82,7 @@ func (db Database) UpdateTask(taskId int, taskData models.Task) (models.Task, er
 
     query := `UPDATE tasks SET taskName=$1, taskDescription=$2, taskIsComplete=$3 WHERE taskId=$4 RETURNING taskId, taskName, taskDescription, taskIsComplete, taskCreatedAt;`
 
-    err := db.Conn.QueryRow(query, taskData.TaskName, taskData.TaskDescription, taskData.TaskIsComplete, taskData.TaskId).Scan(&task.TaskId, &task.TaskName, &task.TaskDescription, &task.TaskIsComplete, &task.TaskCreatedAt)
+    err := db.Conn.QueryRow(query, taskData.TaskName, taskData.TaskDescription, taskData.TaskIsComplete, taskId).Scan(&task.TaskId, &task.TaskName, &task.TaskDescription, &task.TaskIsComplete, &task.TaskCreatedAt)
 
     if err != nil {
         if err == sql.ErrNoRows {
