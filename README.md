@@ -89,3 +89,11 @@ Provides CRUD actions on Tasks and TaskCategories.
 1. The first attempt at running the application with `docker compose up` may result in only booting the database server but not the Rest Api. If this is the case please terminate the server and run `docker compose up` again. This should result in both the database and rest api server booting up successfully. 
 
 2. Database tables not creating or seeding properly: run the following from root of project `docker-compose down --volumes`
+
+## Future Improvements
+- Add system/integration tests to validate controller behavior
+- Add logging
+- Implement HATEOS in response headers
+- Add swagger or swagger equivalent
+- Add support for multiple users
+- Deploy to a free cloud service
