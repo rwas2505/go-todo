@@ -17,7 +17,7 @@ func (db Database) GetAllTasks() (*models.TaskList, error) {
     for rows.Next() {
         var task models.Task
 
-        err := rows.Scan(&task.TaskId, &task.TaskName, &task.TaskDescription, &task.TaskCreatedAt, &task.TaskIsComplete)
+        err := rows.Scan(&task.TaskId, &task.TaskName, &task.TaskDescription, &task.TaskCreatedAt, &task.TaskIsComplete, &task.TaskCategoryId)
 
         if err != nil {
             return list, err
@@ -34,9 +34,9 @@ func (db Database) AddTask(task *models.Task) error {
     var taskCreatedAt string
     var taskIsComplete bool
 
-    query := `INSERT INTO tasks (taskname, taskdescription) VALUES ($1, $2) RETURNING taskid, taskcreatedat, taskiscomplete`
+    query := `INSERT INTO tasks (taskname, taskdescription, taskcategoryid) VALUES ($1, $2, $3) RETURNING taskid, taskcreatedat, taskiscomplete`
 
-    err := db.Conn.QueryRow(query, task.TaskName, task.TaskDescription).Scan(&taskId, &taskCreatedAt, &taskIsComplete)
+    err := db.Conn.QueryRow(query, task.TaskName, task.TaskDescription, task.TaskCategoryId).Scan(&taskId, &taskCreatedAt, &taskIsComplete)
 
     if err != nil {
         return err

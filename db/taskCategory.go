@@ -60,10 +60,10 @@ func (db Database) GetTaskCategoryById(taskCategoryId int) (models.TaskCategory,
     }
 }
 
-func (db Database) DeleteTaskList(taskListId int) error {
-    query := `DELETE FROM taskLists WHERE taskListId = $1;`
+func (db Database) DeleteTaskCategory(taskCategoryId int) error {
+    query := `DELETE FROM taskCategories WHERE taskCategoryId = $1;`
 
-    _, err := db.Conn.Exec(query, taskListId)
+    _, err := db.Conn.Exec(query, taskCategoryId)
 
     switch err {
     case sql.ErrNoRows:

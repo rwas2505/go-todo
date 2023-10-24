@@ -128,7 +128,7 @@ func updateTaskCategory(w http.ResponseWriter, r *http.Request) {
 func deleteTaskCategory(w http.ResponseWriter, r *http.Request) {
     taskCategoryId := r.Context().Value(taskCategoryIdKey).(int)
 	
-    err := dbInstance.DeleteTaskList(taskCategoryId)
+    err := dbInstance.DeleteTaskCategory(taskCategoryId)
 	
     if err != nil {
         if err == db.ErrNoMatch {

@@ -11,6 +11,7 @@ type Task struct {
     TaskDescription string `json:"task_description"`
     TaskCreatedAt string `json:"task_created_at"`
     TaskIsComplete bool `json:"task_is_complete"`
+    TaskCategoryId int `json:"task_category_id"`
 }
 
 type TaskList struct {
