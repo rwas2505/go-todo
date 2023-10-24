@@ -15,6 +15,7 @@ func NewHandler(db db.Database) http.Handler {
     router.MethodNotAllowed(methodNotAllowedHandler)
     router.NotFound(notFoundHandler)
     router.Route("/tasks", tasks) //root for tasks, children defined in handler.tasks.go
+    router.Route("/taskCategories", taskCategories) //root for taskCategories, children defined in handler.tasks.go
     return router
 }
 func methodNotAllowedHandler(w http.ResponseWriter, r *http.Request) {

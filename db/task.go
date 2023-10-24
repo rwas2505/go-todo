@@ -77,6 +77,7 @@ func (db Database) DeleteTask(taskId int) error {
     }
 }
 
+
 func (db Database) UpdateTask(taskId int, taskData models.Task) (models.Task, error) {
     task := models.Task{}
 
