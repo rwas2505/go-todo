@@ -56,7 +56,7 @@ func (db Database) GetTaskById(taskId int) (models.Task, error) {
 
     row := db.Conn.QueryRow(query, taskId)
 
-    switch err := row.Scan(&task.TaskId, &task.TaskName, &task.TaskDescription, &task.TaskCreatedAt, &task.TaskIsComplete); err {
+    switch err := row.Scan(&task.TaskId, &task.TaskName, &task.TaskDescription, &task.TaskCreatedAt, &task.TaskIsComplete, &task.TaskCategoryId); err {
     case sql.ErrNoRows:
         return task, ErrNoMatch
     default:
@@ -81,9 +81,9 @@ func (db Database) DeleteTask(taskId int) error {
 func (db Database) UpdateTask(taskId int, taskData models.Task) (models.Task, error) {
     task := models.Task{}
 
-    query := `UPDATE tasks SET taskName=$1, taskDescription=$2, taskIsComplete=$3 WHERE taskId=$4 RETURNING taskId, taskName, taskDescription, taskIsComplete, taskCreatedAt;`
+    query := `UPDATE tasks SET taskName=$1, taskDescription=$2, taskIsComplete=$3, taskCategoryId=$4 WHERE taskId=$5 RETURNING taskId, taskName, taskDescription, taskIsComplete, taskCategoryId, taskCreatedAt;`
 
-    err := db.Conn.QueryRow(query, taskData.TaskName, taskData.TaskDescription, taskData.TaskIsComplete, taskId).Scan(&task.TaskId, &task.TaskName, &task.TaskDescription, &task.TaskIsComplete, &task.TaskCreatedAt)
+    err := db.Conn.QueryRow(query, taskData.TaskName, taskData.TaskDescription, taskData.TaskIsComplete, taskData.TaskCategoryId, taskId).Scan(&task.TaskId, &task.TaskName, &task.TaskDescription, &task.TaskIsComplete, &task.TaskCategoryId, &task.TaskCreatedAt)
 
     if err != nil {
         if err == sql.ErrNoRows {
