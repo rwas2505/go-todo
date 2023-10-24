@@ -111,7 +111,7 @@ func updateTask(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		if err == db.ErrNoMatch {
-			render.Render(w, r, ErrNotFound)
+			render.Render(w, r, ErrorNotFound(err, taskId))
 		} else {
 			render.Render(w, r, ServerErrorRenderer(err))
 		}

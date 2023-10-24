@@ -3,6 +3,7 @@ package handler
 import (
     "github.com/go-chi/render"
     "net/http"
+    "fmt"
 )
 
 type ErrorResponse struct {
@@ -29,6 +30,15 @@ func ErrorRenderer(err error) *ErrorResponse {
         StatusCode: 400,
         StatusText: "Bad request",
         Message: err.Error(),
+    }
+}
+
+func ErrorNotFound(err error, taskId int) *ErrorResponse {
+    return &ErrorResponse{
+        Err: err,
+        StatusCode: 404,
+        StatusText: "Not Found",
+        Message: fmt.Sprintln("Error: %s. TaskId: %d", err.Error(), taskId),
     }
 }
 

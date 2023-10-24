@@ -65,7 +65,7 @@ func (db Database) GetTaskById(taskId int) (models.Task, error) {
 }
 
 func (db Database) DeleteTask(taskId int) error {
-    query := `DELETE FROM tasks WHERE id = $1;`
+    query := `DELETE FROM tasks WHERE taskId = $1;`
 
     _, err := db.Conn.Exec(query, taskId)
 
