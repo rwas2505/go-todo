@@ -2,12 +2,30 @@
 
 This is a Golang application with a postgresDb data store providing Restful routes for a TODO app supporting Tasks and TaskCategories. 
 
-It can be built and deployed with simple Docker commands. Docker must be installed on your local machine for this to work. 
+It can be built and deployed with simple Docker commands either by cloning this repo or pulling from docker hub. Docker must be installed on your local machine for this to work. 
 
 After building and running the containers with docker, your local docker environment will contain a `Tasks` and `TaskCategories` table in a postgres server exposed on port 5432 as well as a RestApi exposed on port 8080. Postgres credentials are stored in the .env file.
 
 The database will have some initial seed data and so making a GET to  http://localhost:8080/tasks or http://localhost:8080/taskCategories will result in 200 responses with data returned.
+# Pull Images from Docker Hub and Run Locally
+This method does not require cloning this repository at all. Simply run the below commands with docker installed on your machine and then skip to the "REST API" section\
+\
+`docker pull rwas2505/go-chi-postgres:latest`\
+\
+`docker pull rwas2505/go-chi-server:latest`\
+\
+Create a network for the containerized database and web api to talk to each other on: \
+`docker network create --driver bridge go-chi-todo`\
+\
+Run the postgres database on localhost:5432:\
+`docker run -p 5432:5432 -e POSTGRES_PASSWORD=ryan-go-chi -e POSTGRES_USER=ryan-go-chi -e POSTGRES_DB=ryan_go_chi --network go-chi-todo --name database rwas2505/go-chi-postgres:latest`\
+\
+Run the go rest api on http://localhost:8080 and connect it to the postgres database on the same docker network\
+`docker run -p 8080:8080 -e POSTGRES_PASSWORD=ryan-go-chi -e POSTGRES_USER=ryan-go-chi -e POSTGRES_DB=ryan_go_chi --network go-chi-todo --name server rwas2505/go-chi-server:latest`
 
+
+# Build images and containers locally
+This method requires cloning the repository. Then you can build the images locally and run the app with the below commands.
 ## Build Docker Image
 `docker compose build`
 
@@ -16,7 +34,7 @@ The database will have some initial seed data and so making a GET to  http://loc
 
 NOTE: localhost:8080 may not be exposed after the very first execution of `docker compose up`. If this is the case please simply kill the server and run `docker compose up` again.
 
-## REST API
+# REST API
 Provides CRUD actions on Tasks and TaskCategories.
 
 ## Task Categories
